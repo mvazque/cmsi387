@@ -1,0 +1,50 @@
+command crib sheet
+
+cd - Stands for change directory. 
+The directory given will become the new location for the terminal
+Ex- cd public_html
+	cd ..
+
+ls - Lists the contents within a directory. 
+Can have an optional input to filter what will be shown.
+Ex- ls -l Uses long list format
+	ls -a Does not ignore entries starting with .
+	
+ps - Shows a snap shot of the current processes
+Allows for optional filters
+Ex - ps
+
+pwd - Stands for Print Working Directory
+This command prints out the directory the user is currently located in
+Ex - pwd
+
+history - prints out the most recent commands executed
+Number of commands can be specified
+Ex -  history
+
+ln - Stands for link
+This command causes for one file name to refer to another file
+There are two type of links
+Symbolic links - Refers to a symbolic path
+Ex - ln -s stuff things.txt
+Hard link - Path that refers to the exact referral number
+Ex - ln stuff things.txt
+
+fg - foreground - brings suspended processes to the foreground thus resuming
+the action
+Ex - fg thing
+
+bg - background - can be used to send a command to the background. Used
+if a command is taking too long to execute
+Ex - bg job
+
+vi - visual editor - This is a full screen editor with two operation modes
+	Command mode - actions are taken on the file
+	Insert mode - text is inserted to file
+To exit vi mode type :q
+Ex - vi file.txt
+
+uptime - prints the length of time the system has been running
+Ex - uptime
+
+What is sh?

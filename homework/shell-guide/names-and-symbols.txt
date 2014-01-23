@@ -1,0 +1,23 @@
+names-and-symbol
+
+~ - tilde - home directory - Represents the $HOME variable
+
+Path - directories that have been traversed to get to a file.
+
+>, >>  - redirection symbols - Redirects output from command to the left of the
+symbol to the command on the right
+
+| - pipe - Passes the output of previous command to the input of the next command
+
+|| - OR operator - Will return a 0 meaning success if either of the conditions are true
+
+& - will cause a command to be run in the background
+
+; - command separator - This allows for two commands to be placed on the same line
+
+.. - can be used to go up a level in directories when using commands that require an
+exact directory
+
+! - bang - inverts the meaning of a test operator
+
+* - wild card - matches every filename in a given directory
