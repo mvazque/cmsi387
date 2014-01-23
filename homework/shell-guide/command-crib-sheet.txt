@@ -16,6 +16,7 @@ Ex - ps
 
 pwd - Stands for Print Working Directory
 This command prints out the directory the user is currently located in
+Allows for options
 Ex - pwd
 
 history - prints out the most recent commands executed
@@ -23,12 +24,12 @@ Number of commands can be specified
 Ex -  history
 
 ln - Stands for link
-This command causes for one file name to refer to another file
+This command causes for one file name to refer to another file, has various options for links
 There are two type of links
 Symbolic links - Refers to a symbolic path
-Ex - ln -s stuff things.txt
+Ex - ln -s things.txt stuff
 Hard link - Path that refers to the exact referral number
-Ex - ln stuff things.txt
+Ex - ln things.txt stuff
 
 fg - foreground - brings suspended processes to the foreground thus resuming
 the action
@@ -41,10 +42,19 @@ Ex - bg job
 vi - visual editor - This is a full screen editor with two operation modes
 	Command mode - actions are taken on the file
 	Insert mode - text is inserted to file
-To exit vi mode type :q
+To exit vi and save type :x
+To exit vi mode without any changes having been made :q
+To exit and save changes if any were made ZZ
+To exit and ignore any changes :q!
 Ex - vi file.txt
 
 uptime - prints the length of time the system has been running
 Ex - uptime
 
-What is sh?
+cat - Echos what the user will type in. Can be used with > to write to a text file. ctrl + c 
+lets it know when the user is done using it
+Ex - cat > cat.txt
+
+The following commands are works in progress
+
+sh - command interpreter
