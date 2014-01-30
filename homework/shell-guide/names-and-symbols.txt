@@ -3,9 +3,12 @@ names-and-symbol
 ~ - tilde - home directory - Represents the $HOME variable
 
 Path - directories that have been traversed to get to a file.
+# JD: Be precise---you mean PATH, not Path.  (when you are talking about
+$     operating system symbols, exact fidelity matters)
 
 >, >>  - redirection symbols - Redirects output from command to the left of the
 symbol to the command on the right
+# JD: Not a command on the right---the one on the right is always a file.
 
 | - pipe - Passes the output of previous command to the input of the next command
 
