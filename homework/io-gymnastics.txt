@@ -1,0 +1,10 @@
+2.Look at folder labeled "Problem"
+ 
+3.Usage of dU 
+ 
+a) du -d 1 | sort -nrk 1 | head -2
+ 
+34056	.
+15104	./.cache
+
+The first entry is the usage of the home directory and the second is local subdirectory that has the highest disk usage
