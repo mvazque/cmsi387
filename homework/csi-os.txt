@@ -1,0 +1,10 @@
+Csi-os
+All of the images related to this part of this assignment
+are located in the folder title csi-os_images.
+The images are all titled similarly
+"os" - mac,windows,linux
+"os"_first_process
+"os"_kernel
+"os"_network
+"os"_preOS
+"os"_startUp_scripts
