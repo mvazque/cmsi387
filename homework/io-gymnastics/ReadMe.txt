@@ -1,5 +1,9 @@
 1.File titled ssh_tunnel.png is the evidence
 
+# JD: Most of the desired information was in that screenshot except for the command itself.
+#     Fortunately, you came in and asked about it, so I know that you put that command
+#     together correctly.
+
 2.The files titled ping_1.png and ping_2.png show the before and after evidence.
  
 3.Usage of dU 
