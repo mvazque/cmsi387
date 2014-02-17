@@ -14,9 +14,18 @@ first_process.png -- ps -p 1 shows the processes and -p option allows a specific
 
 kernel.png -- For this part three different commands were found that provided similar information. uname prints system information with -r representing the kernel and -a all.
 
+# JD: Yes, you did locate information *about* the kernel; what we were after is
+#     the very kernel itself, as it is stored on the boot disk.
+
 network.png -- There is a button at the top right of the screen on the wired version it is the two arrows pointing in opposite directions which is where the mouse pointer is located in the screenshot.
 
 preOS.png -- There is a directory title boot that contains files that start when the system is booted up. By using ls to see the files while inside the directory they were found.
+
+# JD: Actually, this screenshot might be better named linux_kernel.png ;-) hint hint
+#     For pre-OS "evidence," we were actually looking more for the software actually
+#     running.  So, instead of the GRUB directory, we wanted a screenshot of the
+#     actual GRUB menu.  But either way, this is still a good "hit," just not the
+#     ideal one.
 
 startUp_scripts.png -- The directory /etc is said to contain the configure files which are connected to start up. The directory was changed to the directory and grep was used to find only the files containing .conf for configure.
 
@@ -26,9 +35,13 @@ first_process.png -- ps -p 1 This command represents showing the processes by th
 
 kernel.png -- the kernel file was found within directory / and is the file titled mach_kernel.
 
+# JD: Yes, exactly this---on Linux, files like this are locatable on the boot disk too.
+
 network -- For the network settings the wifi signal can be clicked on and then by selecting the network settings option.
 
 preOS.jpg -- While the computer is starting up if command + v is selected the Verbose boot information will be displayed
+
+# JD: As mentioned above, this is what we prefer to see as evidence.
 
 startUp_scritps.png -- These files are located within the preferences directory and can be viewed by usage of ls.
 
@@ -43,3 +56,6 @@ network.png -- Going through control panel and then selecting Network and Intern
 preOS.jpg -- Pressing F2 while it boots up will allow access to what is shown in the image.
 
 startUp_scripts.png -- There is a startup directory that contains the files used when starting up the computer. They were directed by using the dir command.
+
+# JD: So in the end it looks like Linux is where you missed things a little bit more than others.
+#     Still, overall everything was in the right direction; just more exact on Mac and Windows.
