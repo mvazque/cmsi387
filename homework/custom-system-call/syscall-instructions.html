@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h1>Instructions for creating your own syscall in Ubuntu-Trusty</h1>	 	
+	<h2>Getting and building the kernel</h2>
+	<p>1.The first step involves getting the source code from the Ubuntu Git 		repository. The command for this is as follows</br>
+	<b>git clone git://kernel.ubuntu.com/ubuntu/ubuntu-trusty.git</b></br>
+	With this complete the directory ubuntu-trusty should appear</p>	
+
+	<p>2.The following two steps will build the kernel
+	<b>fakeroot debian/rules clean</b></br>
+	<b>fakeroot debian.rules binary-headers binary-generic</b></br>
+	   These steps should resut in multiple debian files (.deb)</p>
+	
+	<p>3.The next step is to depackage and test the kernel.</br>
+	<b>sudo dpkg -i linux*___________.deb</b></br>
+	<b>sud reboot</b></p>
+
+	<h2>Creating the custom system call for x86 processor</h2>
+	<p>1.The second step involves opening the file 
+	<b>arch/m68k/kernel/syscall_table_32.S</b>
+	    This document should have a lot of lines that say something like <b>.long 		    sys</b> At the end of this file add your own sycall. For the sake of this 		    tutorial it will be titled hello. The command should be as follows</br>
+	    <b>.long sys hello</b></p>
+
+	<p>2.The next stop involves defining the system call. For this the file 
+	   arch/m68k/include/asm/unistd.h. This will define the system call for a 		   32-bit system. This file should have a lot of lines 
+</body>
+</html>
