@@ -14,7 +14,9 @@
 	
 	<p>3.The next step is to depackage and test the kernel.</br>
 	<b>sudo dpkg -i linux*___________.deb</b></br>
-	<b>sud reboot</b></p>
+	<b>sudo reboot</b></br>
+	When the computer restarts the new kernel should be the version running. You 		can check the version with the following command</br>
+	<b>uname -r</b></p>
 
 	<h2>Creating the custom system call for x86 processor</h2>
 	<p>1.The second step involves opening the file 
@@ -23,6 +25,44 @@
 	    <b>.long sys hello</b></p>
 
 	<p>2.The next stop involves defining the system call. For this the file 
-	   arch/m68k/include/asm/unistd.h. This will define the system call for a 		   32-bit system. This file should have a lot of lines 
+	   arch/m68k/include/asm/unistd.h. This will define the system call for a 		   32-bit system. This file should have a lot of lines that look similar to 		   this.</br>
+	<b>#define ___NR _____ ###</b></br>
+	   At the end of this file place the following line
+	<b>#define NR "systemname" 349</b></br>
+	   Upon doing this find the line that looks like this</br>
+	<b>#define NR syscalls 350</b></br>
+	   This updates the number of system calls and gives your custom system call 		   its system call number</p>
+
+	<p>3.The next step involves telling the kernel about you program in the 	   directory <b> ../../../.. </b>. Upon finding this file place the following 		   line at the end of the file.</br>
+	<b>asmlinkage long sys_"systemname"(void);</b></p>
+
+	<p>4.With all the preparation the system call code now needs to be written. Be 		   sure to create a directory for the code. Be sure it has the name you have 		   given the system call. For the sake of this tutorial a simple code will be 		   provided.</br>
+	<b>#include <linux/kernel.h></br>
+	   asmlinkage long sys_hello(void) {</br>
+		printk("Hello World\n");</br>
+		return 0;</br>
+	   }</br></b></p>
+	
+	<p>5.Within the same directory create a text document title Makefile. Within  		   the document type in the following line.</br>
+	<b>obj-y := "systemname".o</b></br>
+	   This will ensure that the system call C code is compiled and included in the 	   kernel.Moving up on level in the directory there should be another Makefile 		   document. This should be opened with a text editor and the following line or 	   something similar should be found.</br>
+	<b>core-y += kernel/mm/fs/ipc/security/crypto</b></br>
+	   This could should be appended to look like this.</br>
+	<b>core-y += kernel/mm/fs/ipc/security/crypto/"systemname"</b></p>
+
+	<p>Congratulations. You now have a custom call that should be included in the 		   kernel the next time it is built. You can redo steps 2 & 3 from the "Getting 	   and building the kernel" instructions to build it.</p>
+
+	<h2>Testing your custom system call</h2>
+	<p>You can create a simple C code that will invoke the custom system call.Here 		   is a quick C code for that purpose.</br>
+	<b>main() {</br>
+	      syscall(349);</br>
+	   }</b></br></p>
+
+	<p>The printk command from the system call prints to the kernel log. In order 		   to see the printed items the following line can be used.</br>
+	<b>tail -f /var/log/kern.log</b></br>
+	   This will print the kernel log and the 10 latest outputs. This will update 		   accordingly. All that is left is to gcc the code to call the custom system 		   call and execute it. The text "Hello World" should appear on the log.</p>
+
+	<p>With this you have sucesfully created your own system call and tested it.</p>
+	
 </body>
 </html>
