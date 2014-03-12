@@ -1,68 +1,92 @@
 <!DOCTYPE html>
 <html>
-<body>
-	<h1>Instructions for creating your own syscall in Ubuntu-Trusty</h1>	 	
-	<h2>Getting and building the kernel</h2>
-	<p>1.The first step involves getting the source code from the Ubuntu Git 		repository. The command for this is as follows</br>
-	<b>git clone git://kernel.ubuntu.com/ubuntu/ubuntu-trusty.git</b></br>
-	With this complete the directory ubuntu-trusty should appear</p>	
+	<body>
+		<h1>Instructions for creating your own syscall in Ubuntu-Trusty</h1>	 	
+		<h2>Getting and building the kernel</h2>
+		
+		<h3>Prerequisites</h3>
+		
+		<p>1.A system running Ubuntu. This can be either a computer or to play it safe a virtual machine(which was what the author did)</br>
+		   2.git</br>
+		   3.make</br>
+		   4.gcc</br>
+		   5.dpkg</br>
+		   6.gedit</br></p>
 
-	<p>2.The following two steps will build the kernel
-	<b>fakeroot debian/rules clean</b></br>
-	<b>fakeroot debian.rules binary-headers binary-generic</b></br>
-	   These steps should resut in multiple debian files (.deb)</p>
-	
-	<p>3.The next step is to depackage and test the kernel.</br>
-	<b>sudo dpkg -i linux*___________.deb</b></br>
-	<b>sudo reboot</b></br>
-	When the computer restarts the new kernel should be the version running. You 		can check the version with the following command</br>
-	<b>uname -r</b></p>
+		<p>These are packages that should be installed to your system in order to build the new kernel. Most of these should seem familiar except 
+			possibly for fakeroot.This package tricks programs into thinking that they have root priveleges and execute. Aside from these packages
+			the build environment needs to be setup. This can be done with the following command.</br></br>
+		<code>sudo apt-get build-dep linux-image-$(uname -r)</code></p>
+		   
+		<h3>1.Downloading the Source Code</h3>   
+		<p>The Ubuntu source code can be found within their git repository. This is not a typical git repository from GitHub but rather a private git repository. The command to clone Ubuntu Trusty is as follows</br></br>
+		<code>git clone git://kernel.ubuntu.com/ubuntu/ubuntu-trusty.git</code></br></br>
+		With this complete the directory titled ubuntu-trusty should appear. This contains the entire source code that will be needed. It should be noted that this is a hefty folder with roughly 12 GB worth of information. Be prepared for a length download time.</p>	
+		
+		<h3>2.Building the Kernel</h3> 
+		<p>The following two steps will build the kernel as well as clean it</br></br>
+		<code>fakeroot debian/rules clean</br>
+		   fakeroot debian.rules binary-headers binary-generic</code></br></br>
+		   These steps should result in about five debian files (.deb). As a warning the second step took roughly 3-4 hours using a 3 GB RAM virtual machine. It should be noted that it is possible to configure which files are built in order to reduce the build time but this tutorial will not delve into the commands for that.</p>
+		
+		<h3>3.Installing the kernel</h3>
+		<p>The next step requires the installation of the kernel from the .deb files. The dpkg command will be used on the .deb files. The command below will ensure that process.</br></br>
+		<code>sudo dpkg -i *.deb</code></br></br>
+		   Upon doing this the next step is simply to restart the machine and the new kernel will be automatically implemented upon boot. The following command is one way to reboot the machine.</br></br>
+		<code>sudo reboot</code></br></br>
+		When the computer restarts the new kernel should be the version running. You can check the version with the following command</br></br>
+		<code>uname -r</code></p>
 
-	<h2>Creating the custom system call for x86 processor</h2>
-	<p>1.The second step involves opening the file 
-	<b>arch/m68k/kernel/syscall_table_32.S</b>
-	    This document should have a lot of lines that say something like <b>.long 		    sys</b> At the end of this file add your own sycall. For the sake of this 		    tutorial it will be titled hello. The command should be as follows</br>
-	    <b>.long sys hello</b></p>
+		<h2>Creating the custom system call for x86 processor</h2>
+		<h3>1.Adding system call to system call table</h3>
+		<p>This step involves changing all the possible system call tables to include the custom system call table. For the sake of this tutorial the system call will be named helloworld. </br></br>
+		In order to add the system call to the table the system call needs to be added to the 32-bit table and given a number. The number changes based on the version being used. During the writing of this tutorial the number was 351.
+		   The following lines of code show the both the file and the line that needs to be added.</br></br>
+		   <code>arch/x86/syscalls/syscall_32.tbl</br>
+		   351     i386     sys_helloworld        sys_helloworld</code></br></br>
+		   The number 351 is the system call number that belongs to this particular system call.</p>
+		
+		    It should be noted that the number changes from version to version and also on each document. The first number has 369 and the other two during the writing of this had 380 and 374 respectively. The rule of thumb is to simply add one to the number of the last system call before the custom system call.
+			Besides this change the total number also needs to be incremented. The next line shows what will need to be changed</br></br>
+		<code>#define NR syscalls 369</code></br></br>
+		   The number to the very right needs to be incremented by one which states the total number of system calls in the the kernel.
+		   This updates the number of system calls and gives your custom system call its system call number.</br>
+		   The line within the unistd.h document also needs another line written directly under it.This is the code</br></br>
+		<code>__SYSCALL (__NR_helloworld, sys_helloworld)</code></p>
 
-	<p>2.The next stop involves defining the system call. For this the file 
-	   arch/m68k/include/asm/unistd.h. This will define the system call for a 		   32-bit system. This file should have a lot of lines that look similar to 		   this.</br>
-	<b>#define ___NR _____ ###</b></br>
-	   At the end of this file place the following line
-	<b>#define NR "systemname" 349</b></br>
-	   Upon doing this find the line that looks like this</br>
-	<b>#define NR syscalls 350</b></br>
-	   This updates the number of system calls and gives your custom system call 		   its system call number</p>
+		<h3>2.Adding to the Syscall header</h3>
+		<p>This step is meant to allow the C program to be used amongst various programs.The following two lines dictate the file and the line of code to be appended</br></br>
+		<code>include/linux.syscalls.h</br></br>
+		   asmlinkage long sys_helloworld(void);</br></code></p>
+		
+		<h3>3.Creating the system call code</h3>
+		<p>4.With all the preparation the system call code now needs to be written. Be sure to create a directory for the code. Be sure it has the name you have given the system call. For the sake of this tutorial a simple code will be provided.</br></br>
+		<code>#include <linux/kernel.h></br>
+		   asmlinkage long sys_hello(void) {</br>
+			printk("Hello World\n");</br>
+			return 0;</br>
+		   }</br></code></p>
+		
+		<p>4.Within the same directory create a text document title Makefile. Within the document type in the following line.</br></br>
+		<code>obj-y := "systemname".o</code></br></br>
+		   This will ensure that the system call C code is compiled and included in the kernel.Moving up on level in the directory there should be another Makefile document. This should be opened with a text editor and the following line or something similar should be found.</br></br>
+		<code>core-y += kernel/mm/fs/ipc/security/crypto</code></br></br>
+		   This could should be appended to look like this.</br></br>
+		<code>core-y += kernel/mm/fs/ipc/security/crypto/"systemname"</code></p>
 
-	<p>3.The next step involves telling the kernel about you program in the 	   directory <b> ../../../.. </b>. Upon finding this file place the following 		   line at the end of the file.</br>
-	<b>asmlinkage long sys_"systemname"(void);</b></p>
+		<p>Congratulations. You now have a custom call that should be included in the kernel the next time it is built. You can redo steps 2 & 3 from the "Getting 	   and building the kernel" instructions to build it.</p>
 
-	<p>4.With all the preparation the system call code now needs to be written. Be 		   sure to create a directory for the code. Be sure it has the name you have 		   given the system call. For the sake of this tutorial a simple code will be 		   provided.</br>
-	<b>#include <linux/kernel.h></br>
-	   asmlinkage long sys_hello(void) {</br>
-		printk("Hello World\n");</br>
-		return 0;</br>
-	   }</br></b></p>
-	
-	<p>5.Within the same directory create a text document title Makefile. Within  		   the document type in the following line.</br>
-	<b>obj-y := "systemname".o</b></br>
-	   This will ensure that the system call C code is compiled and included in the 	   kernel.Moving up on level in the directory there should be another Makefile 		   document. This should be opened with a text editor and the following line or 	   something similar should be found.</br>
-	<b>core-y += kernel/mm/fs/ipc/security/crypto</b></br>
-	   This could should be appended to look like this.</br>
-	<b>core-y += kernel/mm/fs/ipc/security/crypto/"systemname"</b></p>
+		<h2>Testing your custom system call</h2>
+		<p>You can create a simple C code that will invoke the custom system call.Here is a quick C code for that purpose.</br></br>
+		<code>main() {</br>
+			  syscall(349);</br>
+		   }</code></p>
 
-	<p>Congratulations. You now have a custom call that should be included in the 		   kernel the next time it is built. You can redo steps 2 & 3 from the "Getting 	   and building the kernel" instructions to build it.</p>
+		<p>The printk command from the system call prints to the kernel log. In order to see the printed items the following line can be used.</br></br>
+		<code>tail -f /var/log/kern.log</code></br></br>
+		   This will print the kernel log and the 10 latest outputs. This will update accordingly. All that is left is to gcc the code to call the custom system call and execute it. The text "Hello World" should appear on the log.</p>
 
-	<h2>Testing your custom system call</h2>
-	<p>You can create a simple C code that will invoke the custom system call.Here 		   is a quick C code for that purpose.</br>
-	<b>main() {</br>
-	      syscall(349);</br>
-	   }</b></br></p>
-
-	<p>The printk command from the system call prints to the kernel log. In order 		   to see the printed items the following line can be used.</br>
-	<b>tail -f /var/log/kern.log</b></br>
-	   This will print the kernel log and the 10 latest outputs. This will update 		   accordingly. All that is left is to gcc the code to call the custom system 		   call and execute it. The text "Hello World" should appear on the log.</p>
-
-	<p>With this you have sucesfully created your own system call and tested it.</p>
-	
-</body>
+		<p>With this you have sucesfully created your own system call and tested it.</p>
+		
+	</body>
 </html>
