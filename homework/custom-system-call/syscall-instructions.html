@@ -45,14 +45,6 @@
 		   <code>arch/x86/syscalls/syscall_32.tbl</br>
 		   351     i386     sys_helloworld        sys_helloworld</code></br></br>
 		   The number 351 is the system call number that belongs to this particular system call.</p>
-		
-		    It should be noted that the number changes from version to version and also on each document. The first number has 369 and the other two during the writing of this had 380 and 374 respectively. The rule of thumb is to simply add one to the number of the last system call before the custom system call.
-			Besides this change the total number also needs to be incremented. The next line shows what will need to be changed</br></br>
-		<code>#define NR syscalls 369</code></br></br>
-		   The number to the very right needs to be incremented by one which states the total number of system calls in the the kernel.
-		   This updates the number of system calls and gives your custom system call its system call number.</br>
-		   The line within the unistd.h document also needs another line written directly under it.This is the code</br></br>
-		<code>__SYSCALL (__NR_helloworld, sys_helloworld)</code></p>
 
 		<h3>2.Adding to the Syscall header</h3>
 		<p>This step is meant to allow the C program to be used amongst various programs.The following two lines dictate the file and the line of code to be appended</br></br>
@@ -64,27 +56,44 @@
 		<code>#include <linux/kernel.h></br>
 		   asmlinkage long sys_hello(void) {</br>
 			printk("Hello World\n");</br>
-			return 0;</br>
+		    return 0;</br>
 		   }</br></code></p>
 		
-		<p>4.Within the same directory create a text document title Makefile. Within the document type in the following line.</br></br>
+		<h3>4.The Makefiles</h3>
+		<p>Within the same directory that the system call code was created create a document titled Makefile. Within the document type in the following line.</br></br>
 		<code>obj-y := "systemname".o</code></br></br>
-		   This will ensure that the system call C code is compiled and included in the kernel.Moving up on level in the directory there should be another Makefile document. This should be opened with a text editor and the following line or something similar should be found.</br></br>
-		<code>core-y += kernel/mm/fs/ipc/security/crypto</code></br></br>
+		   This will ensure that the system call C code is compiled and included in the kernel. Moving up one level in the directory there should be another Makefile document. This should be opened with a text editor and the following line or something similar should be found.</br></br>
+		<code>core-y += kernel/ mm/ fs/ ipc/ security/ crypto/ block/</code></br></br>
 		   This could should be appended to look like this.</br></br>
-		<code>core-y += kernel/mm/fs/ipc/security/crypto/"systemname"</code></p>
+		<code>core-y += kernel/ mm/ fs/ ipc/ security/ crypto/ block/ helloworld</code></br></br>
+		
+		Note that there are spaces after every /. This is important and should be included.</p>
 
-		<p>Congratulations. You now have a custom call that should be included in the kernel the next time it is built. You can redo steps 2 & 3 from the "Getting 	   and building the kernel" instructions to build it.</p>
+		<p><b>Congratulations!!</b> You now have a custom call that should be included in the kernel the next time it is built. You can redo steps 2 & 3 from the "Getting and building the kernel" instructions to build it.</p>
 
 		<h2>Testing your custom system call</h2>
 		<p>You can create a simple C code that will invoke the custom system call.Here is a quick C code for that purpose.</br></br>
-		<code>main() {</br>
-			  syscall(349);</br>
-		   }</code></p>
+		<code>#include <stdio.h></br>
+          #include <linux/kernel.h></br>
+          #include <sys/syscall.h></br>
+          #include <unistd.h></br></br>
+          
+          long helloworld_syscall(void) {</br></br>
+          
+              return syscall(351);</br></br>
+            
+          }</br></br>
+          
+          int main(int argc, char *argv[])</br>
+          {</br>
+              long int a = helloworld_syscall();</br>
+              printf("System call returned %ld\n", a);</br>
+              return 0;</br>
+          }</code></p>
 
 		<p>The printk command from the system call prints to the kernel log. In order to see the printed items the following line can be used.</br></br>
-		<code>tail -f /var/log/kern.log</code></br></br>
-		   This will print the kernel log and the 10 latest outputs. This will update accordingly. All that is left is to gcc the code to call the custom system call and execute it. The text "Hello World" should appear on the log.</p>
+		<code>dmesg</code></br></br>
+		   This will print the kernel log and should show your system calls message. This will update accordingly. All that is left is to gcc the code to call the custom system call and execute it. The text "Hello World" should appear on the log.</p>
 
 		<p>With this you have sucesfully created your own system call and tested it.</p>
 		
