@@ -1,0 +1,5 @@
+1.cd gets special mention in this shell because it fails at the first try. There is need for a chdir command rather than the parent child syscall manner.
+
+2.
+
+3.ctrl+D does exit the shell.
