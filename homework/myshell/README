@@ -1,3 +1,5 @@
+NOTE: For most wow be sure to run shell with some distance between you and monitor and max screen size
+
 1.cd gets special mention in this shell because it fails at the first try. There is need for a chdir command rather than the parent child syscall manner.
 
 2.
