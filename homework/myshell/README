@@ -2,6 +2,6 @@ NOTE: For most wow be sure to run shell with some distance between you and monit
 
 1.cd gets special mention in this shell because it fails if not properly taken care of. The way the custom shell works is that it uses fork() to create a child process. The child will use exec() to run the command given by the user. The problem with cd is that the child process does not directly influence the parent. This means that a different method needs to be used to change the directory of the parent which is what you will see if you used ls.
 
-2.
+2.This works if it is redirected as an input as the standard input. Needless to say if you have ./a.out < script.c you will get it to work. The shell recognizes the \n at the end of a script line allowing it to know that it should run the script on a line by line basis. This allows for the shell to run a script.
 
 3.ctrl+D does exit the shell because the shell uses feof which stands for end of file. This means that it will continue to run as long as it has not been given an indication of there no longer being any characters.
