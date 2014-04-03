@@ -73,6 +73,9 @@ int main() {
 			} else if (strcmp("exit", arguments[0]) == 0) {
 				return 1;
 			} else{
+				if(strcmp("./a.out",arguments[0]) == 0){
+					printf("Dogeception\n");
+				}
  	   			/* Variable that will store the fork result. */
     				pid_t pid;
 	
