@@ -18,12 +18,14 @@ int getPhysical(int logical) {
    int physicalAddress;
    
    //This checks to make sure that the logical address is valid
+   // JD: Max check can be unhardcoded via the #define's.
    if(logical < 0 || logical >= 256){
       return ERR_OUT_OF_RANGE;
    }
    
    //Top four bits are the page number. Bottom four are the offset
    page = ((logical & PAGEMASK) >> PAGEBITS);
+   // JD: No need for the "&"---you're right-shifting!
    offset = (logical & PAGESIZE);
 
    //Checks table to ensure the frame is valid
