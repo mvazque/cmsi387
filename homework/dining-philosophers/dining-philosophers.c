@@ -1,7 +1,9 @@
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdio.h>
 
 #include "utility.h"
+#include "table.h"
 
 #define THINKING 0
 #define HUNGRY 1
@@ -11,9 +13,11 @@
 int numberPhilosophers;
 int chopsticks;
 struct tableInfo {
-      int philosopherLocation[numberPhilosophers];
-      int philosopherStatus[numberPhilosophers];
-      int chopstickStatus[numberPhilosophers];
+      int philosopherLocation[MAX_NUMBER_PHILOSOPHERS];
+      int philosopherStatus[MAX_NUMBER_PHILOSOPHERS];
+      int chopstickStatus[MAX_NUMBER_PHILOSOPHERS];
+      pthread_mutex_t chopsticks[MAX_NUMBER_PHILOSOPHERS];
+      int bodyCount;
 } data;
 
 int main(int argc, char** argv) {
@@ -28,17 +32,14 @@ int main(int argc, char** argv) {
    }
    printf("Initiating Dining Philosophers\n");
 
-
-   int chopstickStatus;
    int i;
-   data = {0};
+   struct tableInfo data = {0};
+   data.bodyCount = numberPhilosophers;
    pthread_t philosophers[numberPhilosophers];
-   pthread_mutex_t chopsticks[numberPhilosophers];
-
    for(i = 0 ; i < numberPhilosophers ; i++){
       data.philosopherLocation[i] = i;
-      phtread_mutex_init(&chopsticks[i], NULL);
-      pthread_create(&philosophers[i], NULL,philosophize, &philosopherLocation[i]);
+      pthread_mutex_init(&data.chopsticks[i], NULL);
+     // pthread_create(&philosophers[i], NULL,philosophize, &data);
    }
    
    /* We won't really get here, but to avoid any warnings... */
