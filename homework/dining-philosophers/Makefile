@@ -1,17 +1,13 @@
-bb: bb-harness.o bb-sync.o bb-cs.o consumer.o producer.o utility.o
-	gcc -o bb *.o -lpthread
+dining: dining-philosophers.o chopstickFunctions.o philosopherFunctions.o utility.o
+	gcc -o dining *.o -lpthread
 
-bb-harness.o: bb-sync.h
+dining-philosophers.o: table.h
 
-bb-cs.o: bb-cs.h buffer.h
+chopstickFunctions.o: table.h
 
-bb-sync.o: bb-sync.h buffer.h
+philosopherFunctions.o: table.h
 
-consumer.o: bb-cs.h bb-sync.h buffer.h utility.h
-
-producer.o: bb-cs.h bb-sync.h buffer.h utility.h
-
-utility.o: utility.h
+utility.o: utility.h table.h
 
 clean:
-	rm bb *.o
+	rm dining *.o
