@@ -1,4 +1,4 @@
-dining: dining-philosophers.o chopstickFunctions.o philosopherFunctions.o utility.o
+dining: dining-philosophers.o chopstickfunctions.o philosopherfunctions.o utility.o
 	gcc -o dining *.o -lpthread
 
 dining-philosophers.o: table.h

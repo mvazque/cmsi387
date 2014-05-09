@@ -15,17 +15,15 @@ int randomwait(int bound) {
 }
 
 void printPhilosophers () {
-	int i;
-
-	for (i = 0; i < bodyCount; i++) {
-		if (philosopherStatus[i] == THINKING) {
-			printf(" ? ");
-		} else if (philosopherStatus[i] == HUNGRY) {
-			printf(" \\ ");
-		} else if (philosopherStatus[i] == EATING) {
-			printf(" \\/ ");
-		}
-	}
-	printf("\n");
-
+   int i;
+   for (i = 0; i < bodyCount; i++) {
+      if (philosopherStatus[i] == THINKING) {
+         printf(" ? ");
+      } else if (philosopherStatus[i] == HUNGRY) {
+         printf(" ! ");
+      } else if (philosopherStatus[i] == EATING) {
+         printf(" \\/ ");
+      }
+   }
+   printf("\n");
 }

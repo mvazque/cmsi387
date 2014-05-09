@@ -1,0 +1,4 @@
+There are two main programs to run here. diningPhilosophersComplete is the entire dining philosophers code packed into one text
+file. The second requires running make. While the complete version has everything in it there is no modularization. As such an 
+attempt was made to modularize and the result is needing to run make. This will create the file to be run by the user to see the
+modularized version running. Although they should be the same one may perform better than the other.

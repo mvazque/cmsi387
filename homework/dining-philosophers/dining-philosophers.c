@@ -7,7 +7,7 @@
 
 
 int numberPhilosophers;
-
+//Sets the threads up. Some error checking on user inputs
 int main(int argc, char** argv) {
    if(argc < 2){
       numberPhilosophers = 5;
@@ -26,10 +26,13 @@ int main(int argc, char** argv) {
    for(i = 0 ; i < numberPhilosophers ; i++){
       philosopherLocation[i] = i;
       pthread_mutex_init(&chopsticks[i], NULL);
-      pthread_create(&philosophers[i], NULL,transitions,&philosopherLocation);
+      pthread_create(&philosophers[i], NULL,transitions,&philosopherLocation[i]);
+   }
+
+   for (i = 0; i < numberPhilosophers; i++) {
+      pthread_join(philosophers[i], NULL);
    }
    
-   /* We won't really get here, but to avoid any warnings... */
    return 0;
 }
 
